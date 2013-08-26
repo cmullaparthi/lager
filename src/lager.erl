@@ -20,6 +20,8 @@
 
 -include("lager.hrl").
 
+-export([debug/2, error/2, warning/2, info/2, notice/2]).
+
 %% API
 -export([start/0,
         log/8, log_dest/9, log/3, log/4,
@@ -292,3 +294,24 @@ safe_format(Fmt, Args, Limit, Options) ->
 %% @private
 safe_format_chop(Fmt, Args, Limit) ->
     safe_format(Fmt, Args, Limit, [{chomp, true}]).
+    
+    
+    
+%=====
+%EE Edit
+%RSM
+%These are the log statements required for the nksip app. 
+%The build process has some problems with parse_transforms in header files.
+%The solution is to add the necessary lager:Method calls in this module and then they will not be undef'ed at runtime
+
+%The downside of this is that there is some loss of information from the standard lager logging i.e. M, F, A
+%The best I can offer (as this is a hack) is that you write distinctive log messages, or include the MFA in your own log 
+%FMT, Args params as required. 
+%As such, to avoid the garbage I hacked in below, the app.src of lager no longer prints the M, F components.
+
+%dispatch_log(Severity, Module, Function, Line, Pid, Traces, Format, Args) ->
+debug(Fmt, Args) -> dispatch_log(debug,lager, debug, 313, self(), [], Fmt,Args).
+error(Fmt, Args) -> dispatch_log(error,lager, error, 314, self(), [],Fmt,Args).
+info(Fmt, Args) -> dispatch_log(info,lager, info, 315, self(), [],Fmt,Args).
+notice(Fmt, Args) -> dispatch_log(notice,lager, notice, 316, self(), [], Fmt,Args).
+warning(Fmt, Args) -> dispatch_log(warning,lager, warning, 317, self(),  [], Fmt,Args).
