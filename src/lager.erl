@@ -21,6 +21,7 @@
 -include("lager.hrl").
 
 -export([debug/2, error/2, warning/2, info/2, notice/2]).
+-export([debug/3, error/3, warning/3, info/3, notice/3]).
 
 %% API
 -export([start/0,
@@ -315,3 +316,10 @@ error(Fmt, Args) -> dispatch_log(error,lager, error, 314, self(), [],Fmt,Args).
 info(Fmt, Args) -> dispatch_log(info,lager, info, 315, self(), [],Fmt,Args).
 notice(Fmt, Args) -> dispatch_log(notice,lager, notice, 316, self(), [], Fmt,Args).
 warning(Fmt, Args) -> dispatch_log(warning,lager, warning, 317, self(),  [], Fmt,Args).
+
+
+debug(Traces,Fmt, Args) -> dispatch_log(debug,lager, debug, 313, self(), Traces, Fmt,Args).
+error(Traces,Fmt, Args) -> dispatch_log(error,lager, error, 314, self(), Traces,Fmt,Args).
+info(Traces,Fmt, Args) -> dispatch_log(info,lager, info, 315, self(), Traces,Fmt,Args).
+notice(Traces,Fmt, Args) -> dispatch_log(notice,lager, notice, 316, self(), Traces, Fmt,Args).
+warning(Traces,Fmt, Args) -> dispatch_log(warning,lager, warning, 317, self(),  Traces, Fmt,Args).
